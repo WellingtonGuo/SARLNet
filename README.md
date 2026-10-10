@@ -9,8 +9,6 @@ This folder contains a BasicSR-style, trainable implementation of the SARLNet pr
 - reward: Pareto-weighted MANIQA/MUSIQ/CLIP-IQA scores with optional perceptual shaping
 - evaluation: PSNR/SSIM and no-reference IQA scores
 
-The code is intentionally self-contained. If `pyiqa` is installed, MANIQA/MUSIQ/CLIP-IQA are used directly. Otherwise the training script falls back to deterministic proxy IQA scores so the full pipeline remains runnable.
-
 ## Train
 
 Edit paths in `options/train_sarlnet.yml`, then run:
