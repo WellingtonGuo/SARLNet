@@ -1,0 +1,76 @@
+name: SARLNet_x4_DP_PPO
+manual_seed: 123
+scale: 4
+num_gpu: 1
+
+datasets:
+  train_synth:
+    type: PairedImageDataset
+    dataroot_lq: datasets/AID/train/LR
+    dataroot_gt: datasets/AID/train/HR
+    lq_size: 128
+    gt_size: 512
+    use_hflip: true
+    use_rot: true
+  train_real:
+    type: PairedImageDataset
+    dataroot_lq: datasets/real/train/LR
+    dataroot_gt: ~
+    lq_size: 128
+    gt_size: 512
+    use_hflip: true
+    use_rot: true
+  val:
+    type: PairedImageDataset
+    dataroot_lq: datasets/AID/val/LR
+    dataroot_gt: datasets/AID/val/HR
+    lq_size: 128
+    gt_size: 512
+
+network_g:
+  type: SARLNet
+  scale: 4
+  img_channels: 3
+  base_channels: 64
+  latent_channels: 4
+  num_steps: 8
+  restart_intervals: [0, 1, 2, 4]
+
+train:
+  total_epoch: 100
+  warmup_epoch: 20
+  batch_size_per_gpu: 4
+  num_worker_per_gpu: 4
+  lr: 0.001
+  weight_decay: 0.0001
+  betas: [0.9, 0.999]
+  grad_clip: 1.0
+  perceptual_weight: 0.1
+  ppo:
+    gamma: 0.99
+    clip_range: 0.2
+    value_weight: 0.5
+    entropy_weight: 0.01
+    ppo_epoch: 4
+  reward:
+    metrics: [maniqa, musiq, clipiqa]
+    metric_weights: [0.333333, 0.333333, 0.333334]
+    lambda_dir: 0.05
+    tau: 0.1
+    eps: 0.00000001
+    use_pyiqa: true
+
+val:
+  val_freq: 1
+  save_img: true
+  metrics: [psnr, ssim, maniqa, musiq, clipiqa]
+
+path:
+  experiments_root: experiments/SARLNet_x4_DP_PPO
+  resume_state: ~
+  pretrain_network_g: ~
+
+logger:
+  print_freq: 20
+  save_checkpoint_freq: 5
+

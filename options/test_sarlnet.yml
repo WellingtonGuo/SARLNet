@@ -1,0 +1,28 @@
+name: SARLNet_x4_test
+scale: 4
+
+datasets:
+  test:
+    type: PairedImageDataset
+    dataroot_lq: datasets/AID/test/LR
+    dataroot_gt: datasets/AID/test/HR
+    lq_size: 128
+    gt_size: 512
+
+network_g:
+  type: SARLNet
+  scale: 4
+  img_channels: 3
+  base_channels: 64
+  latent_channels: 4
+  num_steps: 8
+  restart_intervals: [0, 1, 2, 4]
+
+path:
+  pretrain_network_g: experiments/SARLNet_x4_DP_PPO/models/net_g_latest.pth
+  results_root: results/SARLNet_x4_test
+
+val:
+  save_img: true
+  metrics: [psnr, ssim, maniqa, musiq, clipiqa]
+

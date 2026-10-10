@@ -1,0 +1,9 @@
+torch
+torchvision
+numpy
+Pillow
+PyYAML
+tqdm
+# Optional but recommended for real MANIQA/MUSIQ/CLIP-IQA rewards:
+# pyiqa
+
